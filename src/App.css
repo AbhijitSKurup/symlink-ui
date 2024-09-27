@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -35,4 +39,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s ease-in-out;
+}
+
+#slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background-color: #beb4f4;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
 }

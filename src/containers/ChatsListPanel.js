@@ -27,7 +27,7 @@ const ChatsListPanel = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 text-white h-full">
+    <div className="flex flex-col gap-4 p-4 text-white h-full animate-fadeIn">
       <p className="flex ">
         <span className="font-bold text-xl self-center">Chats</span>
         <button className="float-right p-1 bg-primary text-xl text-[#A3BFBA] size-10 rounded-md ml-auto">

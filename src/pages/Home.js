@@ -38,7 +38,7 @@ const HomePage = () => {
 
   return (
     <div className="h-screen flex flex-col bg-[#091219] text-white overflow-hidden">
-      <header className="p-4">
+      <header className="p-4 animate-fadeIn">
         <nav className="flex justify-center space-x-12">
           <a href="#" className="hover:text-gray-300">
             Home
@@ -56,10 +56,10 @@ const HomePage = () => {
       </header>
 
       <main className="flex-grow flex flex-col items-center justify-between px-4 h-full">
-        <h1 className="text-[60px] font-base text-center leading-none mt-[60px]">
+        <h1 className="text-[60px] font-base text-center leading-none mt-[60px] animate-fadeIn">
           <div>Protect Private Data</div> <div>From LLM's</div>
         </h1>
-        <p className="text-lg text-[#F0F7F4] text-center">
+        <p className="text-lg text-[#F0F7F4] text-center animate-fadeIn">
           AI Middleware that Masks Sensitive Data Before LLMs, Ensuring Privacy
           and GDPR Compliance.
         </p>
@@ -91,7 +91,7 @@ const HomePage = () => {
           <img
             src={symlinkImg}
             alt="Dashboard Preview"
-            className="rounded-lg shadow-lg max-w-full h-auto"
+            className="rounded-lg shadow-lg max-w-full h-auto animate-fadeUp"
           />
         </div>
       </main>

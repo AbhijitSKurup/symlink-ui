@@ -6,7 +6,7 @@ const ChatSidePanel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <div className="flex flex-col gap-2 w-full px-2 py-5 items-center">
+    <div className="flex flex-col gap-2 w-full px-2 py-5 items-center animate-fadeRight">
       <p className="rounded-full bg-black size-10 "></p>
       {SideMenuList?.map((item) => (
         <button

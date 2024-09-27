@@ -25,7 +25,7 @@ const InputBar = (props) => {
 
 
   return (
-    <div className="flex items-center bg-gray-800 p-3 rounded-2xl w-8/12 h-14 my-4">
+    <div className="flex items-center bg-gray-800 p-3 rounded-2xl w-8/12 h-14 my-4 animate-fadeUp">
       <div className="mr-3">
         <PaperClip />
       </div>

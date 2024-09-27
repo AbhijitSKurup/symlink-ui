@@ -43,8 +43,8 @@ const ChatsListPanel = () => {
         />
         <span className="float-right">=</span>
       </p>
-      <div className="flex flex-col h-full">
-        <div className="w-full overflow-auto text-white h-full">
+      <div className="flex overflow-y-auto flex-col h-full">
+        <div className="w-full text-white h-full">
           {loading ? (
             <Loader />
           ) : (

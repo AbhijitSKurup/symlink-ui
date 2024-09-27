@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className="flex h-screen w-full">
       {location.pathname !== "/" && (
-        <div className="flex flex-col w-20 bg-[#1B2A41] border border-r-gray-1">
+        <div className="flex flex-col w-20 bg-[#1B2A41] border-r border-r-gray-1">
           <ChatSidePanel />
         </div>
       )}

@@ -10,6 +10,7 @@ module.exports = {
           1: "#2D3838", // borders
           2: "#A3BFBA", // text
           3: "#324A5F",
+          4: "#1B2A41",
         },
         purple: {
           1: "#BEB4F4",

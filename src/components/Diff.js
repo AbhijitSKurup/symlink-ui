@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { Textarea } from "./Textarea";
 
 const Diff = ({ diffText }) => {
   const { masked_text, message, mapped_entity } = diffText;
 
   // Split the texts into words
-  const words1 = message?.split(' ');
-  const words2 = masked_text?.split(' ');
+  const words1 = message?.split(" ");
+  const words2 = masked_text?.split(" ");
 
   const [isEdit, setIsEdit] = useState(null); // Track the identifier being edited (null means no identifier is being edited)
   const [editedIdentifiers, setEditedIdentifiers] = useState({}); // To store updated identifiers for ENTITY1 and ENTITY2
@@ -32,7 +33,7 @@ const Diff = ({ diffText }) => {
     // Update the editedIdentifiers state for the corresponding identifier
     setEditedIdentifiers((prev) => ({
       ...prev,
-      [word]: value
+      [word]: value,
     }));
   };
 
@@ -40,50 +41,53 @@ const Diff = ({ diffText }) => {
     // Update mapped_entity based on editedIdentifiers, keeping the entity the same
     const updatedMappedEntity = mapped_entity.map((entity) => ({
       ...entity,
-      identifier: editedIdentifiers[entity.identifier] || entity.identifier // Update the identifier field based on the state
+      identifier: editedIdentifiers[entity.identifier] || entity.identifier, // Update the identifier field based on the state
     }));
-    console.log('Updated Mapped Entity:', updatedMappedEntity);
+    console.log("Updated Mapped Entity:", updatedMappedEntity);
     // You can now use this updatedMappedEntity for further processing
   };
 
   return (
-    <div className="flex space-x-4">
-      {/* First div for original text (message) */}
-      <div className="w-64 text-white p-4 flex flex-wrap">
-        {words1?.map((word, index) => (
-          <span key={index} className="mr-1">{word}</span>
-        ))}
-      </div>
+    <div className="relative w-full mt-2">
+      <div className="flex space-x-4 mb-2 w-full">
+        {/* First div for original text (message) */}
+        <div className="w-1/2 text-white p-4 flex flex-wrap bg-gray-4 rounded-lg">
+          {words1?.map((word, index) => (
+            <span key={index} className="mr-1">
+              {word}
+            </span>
+          ))}
+        </div>
 
-      {/* Second div for masked text, adding yellow background for changed words */}
-      <div className="w-64 text-white p-4 flex flex-wrap">
-        {words2?.map((word, index) => (
-          <span key={index} className="mr-1">
-            {/* Toggle between span and input field for highlighted words */}
-            {isEdit === word && isIdentifier(word) ? (
-              <input
-                type="text"
-                value={editedIdentifiers[word]} // Value comes from the state
-                className="border p-1 text-black"
-                onChange={(e) => handleInputChange(word, e.target.value)} // Update the input value in the state
-                onBlur={() => setIsEdit(null)} // Convert back to span on blur
-                autoFocus
-              />
-            ) : (
-              <span
-                onClick={() => handleWordClick(word)}
-                className={`mr-1 cursor-pointer ${
-                  isIdentifier(word) ? 'bg-yellow-300 text-black' : ''
-                }`}
-              >
-                {word}
-              </span>
-            )}
-          </span>
-        ))}
+        {/* Second div for masked text, adding yellow background for changed words */}
+        <div className="w-1/2 text-white p-4 flex flex-wrap bg-gray-4 rounded-lg items-center">
+          {words2?.map((word, index) => (
+            <span key={index} >
+              {console.log("word", word, isIdentifier(word))}
+              {/* Toggle between span and input field for highlighted words */}
+              {isEdit === word && isIdentifier(word) ? (
+                <div className="h-[40px] w-[200px] mt-1 mr-1">
+                  <Textarea
+                    value={editedIdentifiers[word]}
+                    onChange={(e) => handleInputChange(word, e.target.value)}
+                    onBlur={() => setIsEdit(null)}
+                  />
+                </div>
+              ) : (
+                <span
+                  onClick={() => handleWordClick(word)}
+                  className={`mr-1 cursor-pointer ${
+                    isIdentifier(word) ? "bg-yellow-300 text-black" : ""
+                  }`}
+                >
+                  {word}
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
       </div>
-
-      <div>
+      <div className="absolute right-0  bg-purple-1 rounded-lg px-5 py-2 mt-2 text-primary hover:scale-105">
         <button onClick={handleConfirm}>Confirm</button>
       </div>
     </div>

@@ -50,7 +50,7 @@ export const SettingsForm = ({
 
   return (
     <>
-      <div className="pb-6">
+      <div className="pb-6 w-[616px]">
         <div className="mb-3 text-gray-2 text-sm">OpenAI api key</div>
         <div className="h-10">
           <Textarea

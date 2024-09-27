@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const apiCall = async (method, url, data = null, headers = {}) => {
+  const baseURL = "https:localhost:5000/"
+  const finalURL = baseURL+ url;
   const config = {
     method,
-    url,
+    finalURL,
     headers,
     data,
   };

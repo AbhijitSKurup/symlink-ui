@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SearchIcon } from "../assets/icons";
-import useFetch from "../hooks/useFetch";
+//import useFetch from "../hooks/useFetch";
 import { Loader } from "../components/Loader";
 
 const ChatsListPanel = () => {
   const [chatList, setChatList] = useState();
   const [selectedChat, setSelectedChat] = useState();
 
-  const { data, loading } = useFetch("chats");
-
+  //const { data, loading } = useFetch("chats");
+  const loading = false;
   useEffect(
     () =>
       setChatList([
@@ -18,7 +18,7 @@ const ChatsListPanel = () => {
         { id: 4, title: "Title", subTitle: "subTitle" },
         { id: 5, title: "Title", subTitle: "subTitle" },
       ]),
-    [data]
+    []
   );
 
   const handleChatSelect = (chatId, e) => {

@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const apiCall = async (method, url, data = null, headers = {}, queryParams) => {
-  const baseURL = "https://fb20-103-181-238-106.ngrok-free.app/";
+  const baseURL = "https://4824-103-138-236-18.ngrok-free.app/";
   const finalURL = baseURL + url + `?${queryParams}`;
   const config = {
     method,
     url: finalURL,
-    headers,
+    headers: { "ngrok-skip-browser-warning": "true" },
     data,
   };
 

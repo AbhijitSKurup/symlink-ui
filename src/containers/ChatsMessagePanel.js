@@ -48,7 +48,6 @@ const ChatsMessagePanel = ({ chatId }) => {
   });
 
   socket.on("chat_history", (res) => {
-    console.log("chat_history", res);
     setMessages(res);
   });
 
@@ -57,13 +56,14 @@ const ChatsMessagePanel = ({ chatId }) => {
     setInput(input);
     if (isReviewRequired) {
       const response = await axios.post(
-        "https://fb20-103-181-238-106.ngrok-free.app/messages/review_message",
+        "https://4824-103-138-236-18.ngrok-free.app/messages/review_message",
         {
-          model_name: "test",
+          model_name: "chat-gpt",
           session_id: id,
           message: input,
           chat_id: chatId,
-        }
+        },
+        { headers: { "ngrok-skip-browser-warning": "true" } }
       );
       setDiffText(response.data);
       setShowDiff(true);
@@ -71,7 +71,7 @@ const ChatsMessagePanel = ({ chatId }) => {
       socket.emit("send_message", {
         message: input,
         session_id: id,
-        model_name: "test",
+        model_name: "chat-gpt",
       });
     }
   };

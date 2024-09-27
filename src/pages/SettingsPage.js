@@ -30,7 +30,8 @@ function SettingsPage() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://fb20-103-181-238-106.ngrok-free.app/configurations"
+        "https://4824-103-138-236-18.ngrok-free.app/configurations",
+        { headers: { "ngrok-skip-browser-warning": "true" } }
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

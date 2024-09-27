@@ -1,6 +1,7 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
-const URL ='https://fb20-103-181-238-106.ngrok-free.app/';
+const URL = "https://4824-103-138-236-18.ngrok-free.app/";
 
-export const socket = io(URL);
-
+export const socket = io(URL, {
+  extraHeaders: { "ngrok-skip-browser-warning": "true" },
+});

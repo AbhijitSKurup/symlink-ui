@@ -4,7 +4,7 @@ export const useSettings = () => {
   const postData = async (data) => {
     try {
       const response = await axios.post(
-        "https://fb20-103-181-238-106.ngrok-free.app/configurations",
+        "https://4824-103-138-236-18.ngrok-free.app/configurations",
         {
           model_name: data.modelName,
           secret_key: data.openApiKey,
@@ -12,7 +12,8 @@ export const useSettings = () => {
           frequency_penalty: data.freqPenalty,
           token_size: data.maxLength,
           system_message: data.customMessage,
-        }
+        },
+        { headers: { "ngrok-skip-browser-warning": "true" } }
       );
 
       return response.data;

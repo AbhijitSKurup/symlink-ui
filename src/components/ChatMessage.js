@@ -6,7 +6,7 @@ const ChatMessage = ({ message, sender }) => {
   const isUser = sender !== 'MODEL'
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-center space-x-2`}>
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-center space-x-2 animate-fadeUp`}>
       {!isUser && (
         <GhostAiLogo />
       )}

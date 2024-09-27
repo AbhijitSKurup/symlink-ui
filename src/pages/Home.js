@@ -14,11 +14,12 @@ const HomePage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://fb20-103-181-238-106.ngrok-free.app/sessions/create",
+        "https://4824-103-138-236-18.ngrok-free.app/sessions/create",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true"
           },
           body: JSON.stringify({ email }),
         }

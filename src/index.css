@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply font-manrope; /* Apply the default sans font globally */
+  }
+
 @layer utilities {
   ::-webkit-scrollbar {
     width: 4px;

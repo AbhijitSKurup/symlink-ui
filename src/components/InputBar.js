@@ -29,7 +29,7 @@ const InputBar = (props) => {
   const handleOnUploadClick = (files) =>{
     if(files?.length){
       socket.emit("send_message_with_file", { 
-      message: message, session_id: sessionId , model_name: 'test', 
+      message: message, session_id: sessionId , model_name: 'chat-gpt', 
       file: files[0], filename: files[0]?.name, chat_id: chatId })
       
       setMessage('')

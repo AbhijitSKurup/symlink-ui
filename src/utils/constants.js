@@ -27,3 +27,8 @@ export const SideMenuList = [
     path: "/",
   },
 ];
+
+export const OpenAIAppOptions = [
+  { label: "Chat GPT- V4o", value: "gpt" },
+  { label: "Llama 3.5", value: "llama" },
+];

@@ -1,13 +1,16 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
 import { SideMenuList } from "../utils/constants";
+import { GhostAiLogo } from "../assets/icons";
 
 const ChatSidePanel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
     <div className="flex flex-col gap-2 w-full px-2 py-5 items-center animate-fadeRight">
-      <p className="rounded-full bg-black size-10 "></p>
+      <p className="flex justify-center items-center rounded-full bg-black size-10 ">
+        <GhostAiLogo />
+      </p>
       {SideMenuList?.map((item) => (
         <button
           key={item?.title}

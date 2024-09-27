@@ -16,19 +16,24 @@ const InputBar = (props) => {
   
   const handleDirectSend = () => {
     sendMessage(message)
+    setMessage('')
     setShowPopup(false)
   };
 
   const handleReviewAndSend = () => {
     sendMessage(message,true)
+    setMessage('')
     setShowPopup(false)
   };
 
   const handleOnUploadClick = (files) =>{
     if(files?.length){
-    socket.emit("send_message_with_file", { 
+      socket.emit("send_message_with_file", { 
       message: message, session_id: sessionId , model_name: 'test', 
-      file: files[0], filename: files[0]?.name, chat_id: chatId })};
+      file: files[0], filename: files[0]?.name, chat_id: chatId })
+      
+      setMessage('')
+    };
   }
 
   const handleFileIconClick = () => fileInputRef?.current.click();

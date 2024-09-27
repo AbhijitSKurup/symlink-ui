@@ -17,38 +17,39 @@ const ChatsMessagePanel = ({ chatId }) => {
   const [selectedAiApp, setSelectedAiApp] = useState(OpenAIAppOptions[0]);
   const [isConnected, setIsConnected] = useState(false)
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { id: 1, text: 'Hey! How\'s it going?', sender: 'bot' },
-    { id: 2, text: 'fine\nwhat about you', sender: 'user' },
-    { id: 3, text: 'I\'m doing great, thanks for asking! What\'s on your mind today?', sender: 'bot' },
-    { id: 4, text: 'having food', sender: 'user' },
-  ]);
+  const [messages, setMessages] = useState([]);
 
 
   socket.on('connect', () => {
     setIsConnected(true)
   });
+  
 
   socket.on('receive_message', (res) => {
-    console.log({res})
-    // setMessages(prev => [...prev, {id: Math.random(), text: res.output.message, sender: 'bot'}])
-  })
+    setMessages(prevMessages => {
+      const isChatIdPresent = prevMessages.some(message => message.id === res.id);
+      
+      if (!isChatIdPresent) {
+        console.log({res})
+        return [...prevMessages, res];  // Spread prevMessages and append res
+      }
+  
+      // Otherwise, return the current state without changes
+      return prevMessages;
+    });
+  });
+
+
+  console.log({messages})
 
   // send message to socket
   const sendMessage = async (input, isReviewRequired) => {
     setInput(input)
-    console.log('emit count')
     if(isReviewRequired){
       socket.emit('send_message', { message: input, session_id: '1ef3fd8edb2407f54b056190d43479322b818641b17462b838720d06480ad8ba', model_name: 'test' });
     }
-
-    socket.emit('send_message', { message: input, session_id: '1ef3fd8edb2407f54b056190d43479322b818641b17462b838720d06480ad8ba', model_name: 'test' });
-    setMessages(prev => [...prev, {id: Math.random(), text: input, sender: 'user'}])
+    socket.emit('send_message', { message: input, session_id: '1ef3fd8edb2407f54b056190d43479322b818641b17462b838720d06480ad8ba', model_name: 'test' }); 
   }
-
-
-
-
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-between w-full">

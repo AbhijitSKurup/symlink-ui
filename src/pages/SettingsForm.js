@@ -3,7 +3,11 @@ import { Slider } from "../components/Slider";
 import { Textarea } from "../components/Textarea";
 import { useSettings } from "../hooks/useSettings";
 
-export const SettingsForm = ({ currentModelId, configurationData }) => {
+export const SettingsForm = ({
+  currentModelId,
+  configurationData,
+  setConfigurationData,
+}) => {
   const defaultSettings = {
     openApiKey: "",
     customMessage: "",
@@ -17,15 +21,20 @@ export const SettingsForm = ({ currentModelId, configurationData }) => {
 
   const { postData } = useSettings();
 
-  const onClickSave = () => {
-    postData(settingsData);
+  const onClickSave = async () => {
+    const data = await postData(settingsData);
+
+    const updatedConfData = configurationData.map((item) =>
+      item.model_name === data.model_name ? data : item
+    );
+    setConfigurationData(updatedConfData);
   };
 
   useEffect(() => {
     setSettingsData(defaultSettings);
 
     if (configurationData) {
-      const currentModelData = configurationData.find(
+      const currentModelData = configurationData?.find(
         (item) => item.model_name === currentModelId
       );
       setSettingsData({
@@ -37,7 +46,7 @@ export const SettingsForm = ({ currentModelId, configurationData }) => {
         freqPenalty: currentModelData?.frequency_penalty ?? 1.4,
       });
     }
-  }, [currentModelId]);
+  }, [currentModelId, configurationData]);
 
   return (
     <>

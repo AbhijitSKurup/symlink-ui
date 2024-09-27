@@ -11,9 +11,11 @@ export const useSettings = () => {
           temperature: data.temperature,
           frequency_penalty: data.freqPenalty,
           token_size: data.maxLength,
+          system_message: data.customMessage,
         }
       );
 
+      return response.data;
     } catch (error) {
       console.error("Error posting data:", error);
     }

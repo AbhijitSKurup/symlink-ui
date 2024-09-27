@@ -23,8 +23,9 @@ const Button = ({ name, onClickModel, selected }) => {
 };
 
 function SettingsPage() {
-  const [currentModelId, setCurrentModelId] = useState('chat-gpt');
+  const [currentModelId, setCurrentModelId] = useState("chat-gpt");
   const [configurationData, setConfigurationData] = useState();
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const fetchData = async () => {
     try {
@@ -35,15 +36,21 @@ function SettingsPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-        setConfigurationData(data);
+      setConfigurationData(data);
+      setLoading(false);
     } catch (error) {
       console.error("Fetch error: ", error);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) {
+    return;
+  }
 
   return (
     <div className="bg-primary w-full h-screen px-8">
@@ -64,6 +71,7 @@ function SettingsPage() {
         <SettingsForm
           currentModelId={currentModelId}
           configurationData={configurationData}
+          setConfigurationData={setConfigurationData}
         />
       </div>
     </div>

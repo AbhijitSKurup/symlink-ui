@@ -11,8 +11,9 @@ import Dropdown from '../components/Dropdown';
 
 
 
-const ChatsMessagePanel = () => {
+const ChatsMessagePanel = ({ chatId }) => {
 
+  console.log('chatIdInChatMessagePanel', chatId);
   const [selectedAiApp, setSelectedAiApp] = useState(OpenAIAppOptions[0]);
   const [isConnected, setIsConnected] = useState(false)
   const [input, setInput] = useState('');

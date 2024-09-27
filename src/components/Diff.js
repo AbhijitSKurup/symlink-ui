@@ -1,69 +1,49 @@
 import React, { useEffect, useState } from 'react';
 
-const Diff = ({diffText}) => {
+const Diff = ({ diffText }) => {
+  const { masked_text, message, mapped_entity } = diffText;
 
-  const { masked_text, message, mapped_entity } = diffText
-
-  console.log({masked_text, message, mapped_entity})
   // Split the texts into words
   const words1 = message?.split(' ');
-  const [words2, setWords2] = useState(masked_text?.split(' '));
-  const [entityMap, setEntityMap] = useState(mapped_entity);
+  const words2 = masked_text?.split(' ');
 
-  console.log({words2, entityMap})
+  const [isEdit, setIsEdit] = useState(null); // Track the identifier being edited (null means no identifier is being edited)
+  const [editedIdentifiers, setEditedIdentifiers] = useState({}); // To store updated identifiers for ENTITY1 and ENTITY2
 
+  // Initialize the editedIdentifiers with default values from mapped_entity
+  useEffect(() => {
+    const initialIdentifiers = {};
+    mapped_entity.forEach((entity) => {
+      initialIdentifiers[entity.identifier] = entity.identifier;
+    });
+    setEditedIdentifiers(initialIdentifiers);
+  }, [mapped_entity]);
 
-//   useEffect(() => {
-//     console.log({masked_text, entityMap})
-// }, [masked_text , entityMap])
-
-console.log(entityMap)
-
-  // Find differences based on the mapped entity
-  const differences = {};
-  entityMap?.forEach((item) => {
-    const indexInWords1 = words1.indexOf(item.entity);
-    const indexInWords2 = words2.indexOf(item.identifier);
-    if (indexInWords1 !== indexInWords2 && indexInWords2 !== -1) {
-      differences[indexInWords2] = {
-        oldWord: item.entity,
-        newWord: item.identifier,
-      };
-    }
-  });
-
-  // State to track which indices are being edited
-  const [editState, setEditState] = useState({});
-
-  // Handle click to toggle between span and input field
-  const handleWordClick = (index) => {
-    if (differences[index]) { // Only allow click if the word is in differences
-      setEditState((prevState) => ({
-        ...prevState,
-        [index]: !prevState[index], // Toggle edit mode for the clicked index
-      }));
-    }
+  const isIdentifier = (word) => {
+    // Check if the word is an identifier in mappedEntity
+    return mapped_entity?.some((entity) => entity.identifier === word);
   };
 
-  // Handle input change
-  const handleInputChange = (index, newValue) => {
-    // Create a new array with the updated word
-    const updatedWords = [...words2];
-    updatedWords[index] = newValue;
-    // setWords2(updatedWords); // Update the state with the new array
+  const handleWordClick = (word) => {
+    setIsEdit(word); // Set the clicked word as the one being edited
+  };
 
-    // Update the corresponding entity in the mapped_entity
-    const updatedEntityMap = entityMap?.map((item) => {
-      if (item.identifier === words2[index]) {
-        return {
-          ...item,
-          entity: newValue,
-        };
-      }
-      return item;
-    });
+  const handleInputChange = (word, value) => {
+    // Update the editedIdentifiers state for the corresponding identifier
+    setEditedIdentifiers((prev) => ({
+      ...prev,
+      [word]: value
+    }));
+  };
 
-    setEntityMap(updatedEntityMap); // Update the mapped_entity state
+  const handleConfirm = () => {
+    // Update mapped_entity based on editedIdentifiers, keeping the entity the same
+    const updatedMappedEntity = mapped_entity.map((entity) => ({
+      ...entity,
+      identifier: editedIdentifiers[entity.identifier] || entity.identifier // Update the identifier field based on the state
+    }));
+    console.log('Updated Mapped Entity:', updatedMappedEntity);
+    // You can now use this updatedMappedEntity for further processing
   };
 
   return (
@@ -80,20 +60,20 @@ console.log(entityMap)
         {words2?.map((word, index) => (
           <span key={index} className="mr-1">
             {/* Toggle between span and input field for highlighted words */}
-            {editState[index] && differences[index] ? (
+            {isEdit === word && isIdentifier(word) ? (
               <input
                 type="text"
-                value={word}
-                className="border p-1"
-                onChange={(e) => handleInputChange(index, e.target.value)}
-                onBlur={() => handleWordClick(index)} // Convert back to span on blur
+                value={editedIdentifiers[word]} // Value comes from the state
+                className="border p-1 text-black"
+                onChange={(e) => handleInputChange(word, e.target.value)} // Update the input value in the state
+                onBlur={() => setIsEdit(null)} // Convert back to span on blur
                 autoFocus
               />
             ) : (
               <span
-                onClick={() => handleWordClick(index)}
+                onClick={() => handleWordClick(word)}
                 className={`mr-1 cursor-pointer ${
-                  differences[index] ? 'bg-yellow-300 text-black' : ''
+                  isIdentifier(word) ? 'bg-yellow-300 text-black' : ''
                 }`}
               >
                 {word}
@@ -101,6 +81,10 @@ console.log(entityMap)
             )}
           </span>
         ))}
+      </div>
+
+      <div>
+        <button onClick={handleConfirm}>Confirm</button>
       </div>
     </div>
   );

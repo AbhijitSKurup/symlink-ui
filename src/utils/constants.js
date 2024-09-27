@@ -3,6 +3,7 @@ import {
   ChatIcon,
   CompassIcon,
   FolderIcon,
+  Price,
 } from "../assets/icons";
 
 export const SideMenuList = [
@@ -17,6 +18,11 @@ export const SideMenuList = [
     path: "/settings",
   },
   {
+    icon: <Price />,
+    title: "Price",
+    path: "/pricing",
+  },
+  {
     icon: <FolderIcon />,
     title: "Folder",
     path: "/",
@@ -25,7 +31,8 @@ export const SideMenuList = [
     icon: <BookmarkIcon />,
     title: "Bookmark",
     path: "/",
-  },
+  }
+
 ];
 
 export const OpenAIAppOptions = [

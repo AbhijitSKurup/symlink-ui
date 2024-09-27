@@ -7,10 +7,9 @@ import { socketMethods } from '../socket/ConnectionState';
 
 import ChatContainer from './ChatContainer';
 
-
-
-const ChatsMessagePanel = () => {
-
+const ChatsMessagePanel = ({ chatId }) => {
+  console.log('chatIdInChatMessagePanel', chatId);
+  
   const [isConnected, setIsConnected] = useState(false)
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([

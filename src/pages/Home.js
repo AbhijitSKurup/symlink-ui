@@ -26,10 +26,11 @@ const HomePage = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      if (data.id) {
-        navigate(`/chat/${data.id}`);
+      const data = await response.json();      
+      if (data.session.id) {
+        navigate(`/chat/${data.session.id}`, { state: { chatId: data.chat.id }});
       }
+      setLoading(false);
     } catch (error) {
       setLoading(false);
     }

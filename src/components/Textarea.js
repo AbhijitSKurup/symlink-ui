@@ -1,6 +1,13 @@
-export const Textarea = ({ rows, onChange, value, onBlur }) => {
+export const Textarea = ({
+  rows,
+  onChange,
+  value,
+  onBlur,
+  onClose,
+  showClose = false,
+}) => {
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <textarea
         id="textarea"
         value={value}
@@ -9,6 +16,14 @@ export const Textarea = ({ rows, onChange, value, onBlur }) => {
         onChange={onChange}
         onBlur={onBlur}
       />
+      {showClose && (
+        <button
+          className="absolute top-2 right-2 text-gray-2 hover:text-purple-1"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+      )}
     </div>
   );
 };

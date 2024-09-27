@@ -58,7 +58,7 @@ const ChatsListPanel = ({setSelectedChat, selectedChat}) => {
                       selectedChat === item?.id ? "bg-[#324A5F]" : ""
                     } cursor-pointer h-16 w-full p-3 hover:bg-[#4e7292] rounded-md`}
                   >
-                    <p>{item?.title}</p>
+                    <p className='font-bold'>{item?.title}</p>
                     <p>{item?.model_name}</p>
                   </div>
                 ))

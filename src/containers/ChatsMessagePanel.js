@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-// import Diff from '../components/Diff';
+import React, { useEffect, useState } from "react";
 
 import InputBar from "../components/InputBar";
 import { socket } from "../socket/socket";
@@ -11,10 +10,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const ChatsMessagePanel = ({ chatId }) => {
-  // session_id = data.get('session_id')
-  //   message_text = data.get('message')
-  //   chat_id = data.get('chat_id')
-  //   model_name = data.get('model_name')\
   const { id } = useParams();
 
   const [selectedAiApp, setSelectedAiApp] = useState(OpenAIAppOptions[0]);
@@ -23,6 +18,10 @@ const ChatsMessagePanel = ({ chatId }) => {
   const [messages, setMessages] = useState([]);
   const [showDiff, setShowDiff] = useState(false);
   const [diffText, setDiffText] = useState({});
+
+  useEffect(() => {
+    socket.emit("get_history", { session_id: id, chat_id: chatId });
+  }, [chatId]);
 
   socket.on("connect", () => {
     setIsConnected(true);
@@ -41,6 +40,16 @@ const ChatsMessagePanel = ({ chatId }) => {
       // Otherwise, return the current state without changes
       return prevMessages;
     });
+  });
+
+  socket.on("review_file", (res) => {
+    setDiffText(res);
+    setShowDiff(true);
+  });
+
+  socket.on("chat_history", (res) => {
+    console.log("chat_history", res);
+    setMessages(res);
   });
 
   // send message to socket
@@ -83,7 +92,13 @@ const ChatsMessagePanel = ({ chatId }) => {
         chatId={chatId}
         setShowDiff={setShowDiff}
       />
-      <InputBar sendMessage={sendMessage} input={input} />
+      <InputBar
+        sendMessage={sendMessage}
+        input={input}
+        socket={socket}
+        sessionId={id}
+        chatId={chatId}
+      />
     </div>
   );
 };

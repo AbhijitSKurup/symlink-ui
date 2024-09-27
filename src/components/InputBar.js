@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { PaperClip, SendIcon } from '../assets/icons';
 
 const InputBar = (props) => {
 
-  const {sendMessage} = props
+  const {sendMessage, socket, sessionId, chatId } = props
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleSend = (e) => {
     e.stopPropagation(); // Prevents event propagation
@@ -23,11 +24,20 @@ const InputBar = (props) => {
     setShowPopup(false)
   };
 
+  const handleOnUploadClick = (files) =>{
+    if(files?.length){
+    socket.emit("send_message_with_file", { 
+      message: message, session_id: sessionId , model_name: 'test', 
+      file: files[0], filename: files[0]?.name, chat_id: chatId })};
+  }
+
+  const handleFileIconClick = () => fileInputRef?.current.click();
 
   return (
     <div className="flex items-center bg-gray-800 p-3 rounded-2xl w-8/12 h-14 my-4 animate-fadeUp">
       <div className="mr-3">
-        <PaperClip />
+      <input className='hidden' type="file" onChange={(e)=>handleOnUploadClick(e.target.files)} ref={fileInputRef} />
+        <PaperClip className='cursor-pointer' onClick={handleFileIconClick} />
       </div>
       {/* Input Field */}
       <input

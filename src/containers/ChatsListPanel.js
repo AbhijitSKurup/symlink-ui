@@ -4,9 +4,8 @@ import { MessageSearch, SearchIcon } from "../assets/icons";
 import { Loader } from "../components/Loader";
 import useFetch from "../hooks/useFetch";
 
-const ChatsListPanel = () => {
+const ChatsListPanel = ({setSelectedChat, selectedChat}) => {
   const [chatList, setChatList] = useState();
-  const [selectedChat, setSelectedChat] = useState();
   const { id } = useParams();
 
   const { fetchData, loading, data } = useFetch();

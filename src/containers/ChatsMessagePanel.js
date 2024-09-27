@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import Diff from '../components/Diff';
 
 import InputBar from '../components/InputBar';
@@ -29,6 +29,10 @@ const ChatsMessagePanel = ({ chatId }) => {
   const [showDiff, setShowDiff] = useState(false)
   const [diffText, setDiffText] = useState({})
 
+  useEffect(()=>{
+    socket.emit('get_history', { session_id: id ,chat_id: chatId })
+  }
+  ,[chatId])
 
   socket.on('connect', () => {
     setIsConnected(true)
@@ -46,6 +50,16 @@ const ChatsMessagePanel = ({ chatId }) => {
       // Otherwise, return the current state without changes
       return prevMessages;
     });
+  });
+
+  socket.on('review_file', (res) => {
+    setDiffText(res)
+    setShowDiff(true)
+  });
+
+  socket.on('chat_history', (res) => {
+    console.log("chat_history",res)
+    setMessages(res);
   });
 
   // send message to socket
@@ -81,7 +95,7 @@ const ChatsMessagePanel = ({ chatId }) => {
         />
       </div>
       <ChatContainer messages={messages} showDiff={showDiff} diffText={diffText} />
-      <InputBar sendMessage={sendMessage} input={input} />
+      <InputBar sendMessage={sendMessage} input={input} socket={socket} sessionId={id} chatId={chatId} />
     </div>
   );
 };

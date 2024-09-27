@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Textarea } from "./Textarea";
+import { socket } from "../socket/socket";
+import { useParams } from "react-router-dom";
 
-const Diff = ({ diffText }) => {
-  const { masked_text, message, mapped_entity } = diffText;
+const Diff = ({ diffText, setShowDiff }) => {
+  const { masked_text, message, mapped_entity, message_id, chat_id} = diffText;
+  const { id } = useParams();
 
   // Split the texts into words
   const words1 = message?.split(" ");
-  const words2 = masked_text?.split(" ");
+  const words2 = masked_text?.replace(/([.,!?;:])/g, ' $1 ')?.split(" ");
 
   const [isEdit, setIsEdit] = useState(null); // Track the identifier being edited (null means no identifier is being edited)
   const [editedIdentifiers, setEditedIdentifiers] = useState({}); // To store updated identifiers for ENTITY1 and ENTITY2
@@ -26,7 +29,7 @@ const Diff = ({ diffText }) => {
   };
 
   const handleWordClick = (word) => {
-    setIsEdit(word); // Set the clicked word as the one being edited
+    setIsEdit(word); // Set the  clicked word as the one being edited
   };
 
   const handleInputChange = (word, value) => {
@@ -43,8 +46,27 @@ const Diff = ({ diffText }) => {
       ...entity,
       identifier: editedIdentifiers[entity.identifier] || entity.identifier, // Update the identifier field based on the state
     }));
-    console.log("Updated Mapped Entity:", updatedMappedEntity);
+    const entityToIdentifier = updatedMappedEntity.reduce((acc, item) => {
+      acc[item.entity] = item.identifier;
+      return acc;
+    }, {});
+
+    // Replace words in words1 with identifiers where applicable
+    const replacedWords = words1.map((word) => {
+      const cleanedWord = word.replace(/[.,]/g, ""); // Remove any punctuation
+      return entityToIdentifier[cleanedWord] || word; // Replace if match found, else keep original
+    });
+
     // You can now use this updatedMappedEntity for further processing
+
+    socket.emit("review_message", {
+      message: replacedWords.join(" "),
+      session_id: id,
+      entity_map: updatedMappedEntity,
+      message_id,
+      chat_id
+    });
+    setShowDiff(false);
   };
 
   return (
@@ -62,15 +84,14 @@ const Diff = ({ diffText }) => {
         {/* Second div for masked text, adding yellow background for changed words */}
         <div className="w-1/2 text-white p-4 flex flex-wrap bg-gray-4 rounded-lg items-center">
           {words2?.map((word, index) => (
-            <span key={index} >
-              {console.log("word", word, isIdentifier(word))}
+            <span key={index}>
               {/* Toggle between span and input field for highlighted words */}
               {isEdit === word && isIdentifier(word) ? (
                 <div className="h-[40px] w-[200px] mt-1 mr-1">
                   <Textarea
                     value={editedIdentifiers[word]}
                     onChange={(e) => handleInputChange(word, e.target.value)}
-                    onBlur={() => setIsEdit(null)}
+                    // onBlur={() => setIsEdit(null)}
                   />
                 </div>
               ) : (

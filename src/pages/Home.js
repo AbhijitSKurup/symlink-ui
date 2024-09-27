@@ -8,14 +8,27 @@ const HomePage = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const handleGetStartedButtonClick = () => {
-    navigate("/chat");
+  const handleGetStartedButtonClick = async () => {
+    const response = await fetch("https://fb20-103-181-238-106.ngrok-free.app/sessions/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    if (data.id) {
+      navigate(`/chat/${data.id}`);
+    }
   };
 
   return (
     <div className="h-screen flex flex-col bg-[#091219] text-white overflow-hidden">
       <header className="p-4">
-        <nav className="flex justify-center space-x-6">
+        <nav className="flex justify-center space-x-12">
           <a href="#" className="hover:text-gray-300">
             Home
           </a>
@@ -49,8 +62,9 @@ const HomePage = () => {
             className="w-2/5 p-3 bg-[#2B2C28] border border-[#091219] rounded-md focus:outline-none focus:border-[#FFFFFF]"
           />
           <button
-            className="w-2/9 bg-[#4452FE] text-white font-base py-3 px-8 rounded-lg"
+            className="w-2/9 bg-[#4452FE] text-white font-base py-3 px-8 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
             onClick={handleGetStartedButtonClick}
+            disabled={!email}
           >
             Get Started
           </button>

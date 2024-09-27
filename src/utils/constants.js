@@ -9,7 +9,7 @@ export const SideMenuList = [
   {
     icon: <ChatIcon />,
     title: "Chats",
-    path: "/chats",
+    path: "/chat",
   },
   {
     icon: <CompassIcon />,
@@ -19,11 +19,16 @@ export const SideMenuList = [
   {
     icon: <FolderIcon />,
     title: "Folder",
-    path: "/chats",
+    path: "/",
   },
   {
     icon: <BookmarkIcon />,
     title: "Bookmark",
-    path: "/chats",
+    path: "/",
   },
+];
+
+export const OpenAIAppOptions = [
+  { label: "Chat GPT- V4o", value: "gpt" },
+  { label: "Llama 3.5", value: "llama" },
 ];

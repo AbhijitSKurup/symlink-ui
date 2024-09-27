@@ -18,7 +18,7 @@ const App = () => {
       <div className="w-full">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/chat/:id" element={<ChatPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </div>

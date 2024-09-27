@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-const apiCall = async (method, url, data = null, headers = {}) => {
-  const baseURL = "https:localhost:5000/"
-  const finalURL = baseURL+ url;
+const apiCall = async (method, url, data = null, headers = {}, queryParams) => {
+  const baseURL = "https://fb20-103-181-238-106.ngrok-free.app/";
+  const finalURL = baseURL + url + `?${queryParams}`;
   const config = {
     method,
-    finalURL,
+    url: finalURL,
     headers,
     data,
   };

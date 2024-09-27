@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PaperClip } from '../assets/icons';
+import { GhostAiLogo, UserLogo } from '../assets/icons';
 
 const ChatMessage = ({ message, sender }) => {
   const isUser = sender !== 'MODEL'
@@ -8,7 +8,7 @@ const ChatMessage = ({ message, sender }) => {
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-center space-x-2`}>
       {!isUser && (
-        <PaperClip />
+        <GhostAiLogo />
       )}
       <div
         className={`max-w-xs rounded-lg p-3`}
@@ -18,7 +18,7 @@ const ChatMessage = ({ message, sender }) => {
         ))}
       </div>
       {isUser && (
-        <PaperClip />
+        <UserLogo />
       )}
     </div>
   );

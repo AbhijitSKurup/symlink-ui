@@ -4,13 +4,13 @@
 
 @layer utilities {
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 4px;
+    height: 4px;
   }
 
   ::-webkit-scrollbar-track {
     border-radius: 100vh;
-    background: #f7f6f4;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {

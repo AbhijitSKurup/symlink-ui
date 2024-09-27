@@ -6,6 +6,8 @@ import { ReactComponent as BookmarkIcon } from "./bookmark.svg";
 import { ReactComponent as MessageSearch } from "./message-search.svg";
 import { ReactComponent as SendIcon } from "./Button.svg";
 import { ReactComponent as PaperClip } from "./paperclip.svg";
+import { ReactComponent as GhostAiLogo } from "./shield-share.svg";
+import { ReactComponent as UserLogo } from "./user-search.svg";
 
 export {
   SearchIcon,
@@ -16,4 +18,6 @@ export {
   MessageSearch,
   SendIcon,
   PaperClip,
+  GhostAiLogo,
+  UserLogo,
 };

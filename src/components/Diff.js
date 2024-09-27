@@ -1,66 +1,83 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+
+const Diff = ({diffText}) => {
+
+  const { masked_text, message, mapped_entity } = diffText
+
+  console.log({masked_text, message, mapped_entity})
+  // Split the texts into words
+  const words1 = message?.split(' ');
+  const [words2, setWords2] = useState(masked_text?.split(' '));
+  const [entityMap, setEntityMap] = useState(mapped_entity);
+
+  console.log({words2, entityMap})
 
 
-const text = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-It has survived not only five centuries, but also the leap into electronic typesetting, 
-remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets 
-containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker 
-including versions of Lorem Ipsum.`;
+//   useEffect(() => {
+//     console.log({masked_text, entityMap})
+// }, [masked_text , entityMap])
 
-const text2 = `Dolor Sit is simply placeholder text of the printing and typesetting sector. 
-Dolor Sit has been the sector's standard placeholder text ever since the 1500s, 
-when an unknown machine took a galley of type and scrambled it to make a type specimen manuscript. 
-It has survived not only five centuries, but also the leap into electronic typesetting, 
-remaining essentially unaltered. It was popularised in the 1960s with the release of Letraset sheets 
-containing Dolor Sit passages, and more recently with desktop publishing program like Aldus PageMaker 
-including versions of Dolor Sit.`;
+console.log(entityMap)
 
-export default function Diff() {
+  // Find differences based on the mapped entity
+  const differences = {};
+  entityMap?.forEach((item) => {
+    const indexInWords1 = words1.indexOf(item.entity);
+    const indexInWords2 = words2.indexOf(item.identifier);
+    if (indexInWords1 !== indexInWords2 && indexInWords2 !== -1) {
+      differences[indexInWords2] = {
+        oldWord: item.entity,
+        newWord: item.identifier,
+      };
+    }
+  });
 
-    const words1 = text.split(' ');
-    const words2 = text2.split(' ');
-  
-    // Find differences between the two texts
-    const differences = {};
-    words1.forEach((word, index) => {
-      if (word !== words2[index]) {
-        differences[index] = {
-          oldWord: word,
-          newWord: words2[index],
+  // State to track which indices are being edited
+  const [editState, setEditState] = useState({});
+
+  // Handle click to toggle between span and input field
+  const handleWordClick = (index) => {
+    if (differences[index]) { // Only allow click if the word is in differences
+      setEditState((prevState) => ({
+        ...prevState,
+        [index]: !prevState[index], // Toggle edit mode for the clicked index
+      }));
+    }
+  };
+
+  // Handle input change
+  const handleInputChange = (index, newValue) => {
+    // Create a new array with the updated word
+    const updatedWords = [...words2];
+    updatedWords[index] = newValue;
+    // setWords2(updatedWords); // Update the state with the new array
+
+    // Update the corresponding entity in the mapped_entity
+    const updatedEntityMap = entityMap?.map((item) => {
+      if (item.identifier === words2[index]) {
+        return {
+          ...item,
+          entity: newValue,
         };
       }
+      return item;
     });
-  
-    // State to track which indices are being edited
-    const [editState, setEditState] = useState({});
-  
-    // Handle click to toggle between span and input field
-    const handleWordClick = (index) => {
-      if (differences[index]) { // Only allow click if the word is in differences
-        setEditState((prevState) => ({
-          ...prevState,
-          [index]: !prevState[index], // Toggle edit mode for the clicked index
-        }));
-      }
-    };
-  
-    // Handle input change
-    const handleInputChange = (index, newValue) => {
-      words2[index] = newValue; // Update the word at the specified index
-    };
+
+    setEntityMap(updatedEntityMap); // Update the mapped_entity state
+  };
+
   return (
     <div className="flex space-x-4">
-              <div className="w-64 bg-blue-500 text-white p-4 flex flex-wrap">
-        {words1.map((word, index) => (
+      {/* First div for original text (message) */}
+      <div className="w-64 text-white p-4 flex flex-wrap">
+        {words1?.map((word, index) => (
           <span key={index} className="mr-1">{word}</span>
         ))}
       </div>
 
-      {/* Second div with text2, adding yellow background for changed words */}
-      <div className="w-64 bg-blue-500 text-white p-4 flex flex-wrap">
-        {words2.map((word, index) => (
+      {/* Second div for masked text, adding yellow background for changed words */}
+      <div className="w-64 text-white p-4 flex flex-wrap">
+        {words2?.map((word, index) => (
           <span key={index} className="mr-1">
             {/* Toggle between span and input field for highlighted words */}
             {editState[index] && differences[index] ? (
@@ -86,5 +103,7 @@ export default function Diff() {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Diff;

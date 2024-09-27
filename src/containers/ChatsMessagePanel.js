@@ -3,21 +3,31 @@ import React, { useState } from 'react';
 
 import InputBar from '../components/InputBar';
 import { socket } from '../socket/socket';
-import { socketMethods } from '../socket/ConnectionState';
 
 import ChatContainer from './ChatContainer';
 import { OpenAIAppOptions } from '../utils/constants';
 import Dropdown from '../components/Dropdown';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 
 
 const ChatsMessagePanel = ({ chatId }) => {
 
-  console.log('chatIdInChatMessagePanel', chatId);
+
+
+  // session_id = data.get('session_id')
+  //   message_text = data.get('message')
+  //   chat_id = data.get('chat_id')
+  //   model_name = data.get('model_name')\
+  const { id } = useParams();
+
   const [selectedAiApp, setSelectedAiApp] = useState(OpenAIAppOptions[0]);
   const [isConnected, setIsConnected] = useState(false)
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [showDiff, setShowDiff] = useState(false)
+  const [diffText, setDiffText] = useState({})
 
 
   socket.on('connect', () => {
@@ -30,7 +40,6 @@ const ChatsMessagePanel = ({ chatId }) => {
       const isChatIdPresent = prevMessages.some(message => message.id === res.id);
       
       if (!isChatIdPresent) {
-        console.log({res})
         return [...prevMessages, res];  // Spread prevMessages and append res
       }
   
@@ -39,21 +48,31 @@ const ChatsMessagePanel = ({ chatId }) => {
     });
   });
 
-
-  console.log({messages})
-
   // send message to socket
   const sendMessage = async (input, isReviewRequired) => {
     setInput(input)
     if(isReviewRequired){
-      socket.emit('send_message', { message: input, session_id: '1ef3fd8edb2407f54b056190d43479322b818641b17462b838720d06480ad8ba', model_name: 'test' });
+      const response = await axios.post(
+        "https://fb20-103-181-238-106.ngrok-free.app/messages/review_message",
+        {
+          model_name: 'test',
+          session_id: id,
+          message: input,
+          chat_id: chatId,
+        }
+      );
+      setDiffText(response.data)
+      setShowDiff(true)
+      
+    } else {
+      socket.emit('send_message', { message: input, session_id: id , model_name: 'test' }); 
     }
-    socket.emit('send_message', { message: input, session_id: '1ef3fd8edb2407f54b056190d43479322b818641b17462b838720d06480ad8ba', model_name: 'test' }); 
   }
+
+
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-between w-full">
-      {/* <Diff /> */}
       <div className="absolute left-0">
         <Dropdown
           onSelect={setSelectedAiApp}
@@ -61,7 +80,7 @@ const ChatsMessagePanel = ({ chatId }) => {
           options={OpenAIAppOptions}
         />
       </div>
-      <ChatContainer messages={messages} />
+      <ChatContainer messages={messages} showDiff={showDiff} diffText={diffText} />
       <InputBar sendMessage={sendMessage} input={input} />
     </div>
   );

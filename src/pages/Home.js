@@ -1,27 +1,37 @@
 import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../components/Loader";
 
-import symlinkImg from '../assets/images/symlink_img.png';
+import symlinkImg from "../assets/images/symlink_img.png";
 
 const HomePage = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleGetStartedButtonClick = async () => {
-    const response = await fetch("https://fb20-103-181-238-106.ngrok-free.app/sessions/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    if (data.id) {
-      navigate(`/chat/${data.id}`);
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "https://fb20-103-181-238-106.ngrok-free.app/sessions/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.id) {
+        navigate(`/chat/${data.id}`);
+      }
+    } catch (error) {
+      setLoading(false);
     }
   };
 
@@ -61,13 +71,19 @@ const HomePage = () => {
             onChange={(e) => setEmail(e.target.value)}
             className="w-2/5 p-3 bg-[#2B2C28] border border-[#091219] rounded-md focus:outline-none focus:border-[#FFFFFF]"
           />
-          <button
-            className="w-2/9 bg-[#4452FE] text-white font-base py-3 px-8 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-            onClick={handleGetStartedButtonClick}
-            disabled={!email}
-          >
-            Get Started
-          </button>
+          {loading ? (
+            <div className="h-12 flex items-center">
+              <Loader />
+            </div>
+          ) : (
+            <button
+              className="w-2/9 bg-[#4452FE] text-white font-base py-3 px-8 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+              onClick={handleGetStartedButtonClick}
+              disabled={!email}
+            >
+              Get Started
+            </button>
+          )}
         </div>
 
         <div className="w-full flex justify-center">
@@ -80,6 +96,6 @@ const HomePage = () => {
       </main>
     </div>
   );
-}
+};
 
 export default HomePage;

@@ -6,11 +6,14 @@ import { socket } from '../socket/socket';
 import { socketMethods } from '../socket/ConnectionState';
 
 import ChatContainer from './ChatContainer';
+import { OpenAIAppOptions } from '../utils/constants';
+import Dropdown from '../components/Dropdown';
 
 
 
 const ChatsMessagePanel = () => {
 
+  const [selectedAiApp, setSelectedAiApp] = useState(OpenAIAppOptions[0]);
   const [isConnected, setIsConnected] = useState(false)
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
@@ -49,6 +52,13 @@ const ChatsMessagePanel = () => {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-between w-full">
       {/* <Diff /> */}
+      <div className="absolute left-0">
+        <Dropdown
+          onSelect={setSelectedAiApp}
+          selected={selectedAiApp}
+          options={OpenAIAppOptions}
+        />
+      </div>
       <ChatContainer messages={messages} />
       <InputBar sendMessage={sendMessage} input={input} />
     </div>

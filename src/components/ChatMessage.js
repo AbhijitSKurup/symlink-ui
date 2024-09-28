@@ -6,12 +6,12 @@ const ChatMessage = ({ message, sender }) => {
   const isUser = sender !== 'MODEL'
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-center space-x-2 animate-fadeUp`}>
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} items-center space-x-2 animate-fadeUp w-full`}>
       {!isUser && (
         <GhostAiLogo />
       )}
       <div
-        className={`max-w-xs rounded-lg p-3`}
+        className={`max-w-lg rounded-lg p-3`}
       >
         {message?.split('\n').map((text, index) => (
           <p key={index}>{text}</p>

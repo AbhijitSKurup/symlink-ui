@@ -5,6 +5,7 @@ import SettingsPage from "./pages/SettingsPage";
 
 import "./App.css";
 import ChatSidePanel from "./containers/ChatSidePanel";
+import Pricing from "./pages/Pricing";
 
 const App = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/chat/:id" element={<ChatPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </div>
     </div>

@@ -9,6 +9,8 @@ import { ReactComponent as PaperClip } from "./paperclip.svg";
 import { ReactComponent as GhostAiLogo } from "./shield-share.svg";
 import { ReactComponent as UserLogo } from "./user-search.svg";
 import { ReactComponent as CloseIcon } from "./close.svg";
+import { ReactComponent as Price } from "./bitcoin.svg";
+import { ReactComponent as TickIcon } from "./tick-tick.svg"
 
 export {
   SearchIcon,
@@ -22,4 +24,6 @@ export {
   GhostAiLogo,
   UserLogo,
   CloseIcon,
+  Price,
+  TickIcon
 };

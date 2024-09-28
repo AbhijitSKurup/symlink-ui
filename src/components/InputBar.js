@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { PaperClip, SendIcon } from '../assets/icons';
+import { CloseIcon, PaperClip, SendIcon } from '../assets/icons';
 
 const InputBar = (props) => {
 
@@ -7,10 +7,14 @@ const InputBar = (props) => {
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const fileInputRef = useRef(null);
+  const [fileSelected, setFileSelected] = useState();
 
   const handleSend = (e) => {
     e.stopPropagation(); // Prevents event propagation
-    setShowPopup(!showPopup); // Toggles the popup
+    if(fileSelected)
+      handleOnUploadClick()
+    else
+      setShowPopup(!showPopup); // Toggles the popup
   };
 
   
@@ -26,22 +30,26 @@ const InputBar = (props) => {
     setShowPopup(false)
   };
 
-  const handleOnUploadClick = (files) =>{
-    if(files?.length){
+  const handleOnUploadClick = () =>{
+    if(fileSelected?.length){
       socket.emit("send_message_with_file", { 
       message: message, session_id: sessionId , model_name: 'chat-gpt', 
-      file: files[0], filename: files[0]?.name, chat_id: chatId })
+      file: fileSelected[0], filename: fileSelected[0]?.name, chat_id: chatId })
       
-      setMessage('')
+      setMessage('');
+      setFileSelected('');
+      fileInputRef.current.value = '';
     };
   }
 
   const handleFileIconClick = () => fileInputRef?.current.click();
 
-  return (
+  return (<>
+  {fileSelected?.length>0 && (<div className='bg-gray-700 h-4 p-4 text-white rounded-md text-center flex items-center gap-1'>{fileSelected[0]?.name} <span className='cursor-pointer' onClick={()=>{setFileSelected(''); 
+      fileInputRef.current.value = '';}}><CloseIcon fill="white" /></span></div>)}
     <div className="flex items-center bg-gray-800 p-3 rounded-2xl w-8/12 h-14 my-4 animate-fadeUp">
       <div className="mr-3">
-      <input className='hidden' type="file" onChange={(e)=>handleOnUploadClick(e.target.files)} ref={fileInputRef} />
+      <input className='hidden' type="file" onChange={(e)=>setFileSelected(e.target.files)} ref={fileInputRef} />
         <PaperClip className='cursor-pointer' onClick={handleFileIconClick} />
       </div>
       {/* Input Field */}
@@ -78,6 +86,7 @@ const InputBar = (props) => {
             )}
       </button>
     </div>
+    </>
   );
 };
 

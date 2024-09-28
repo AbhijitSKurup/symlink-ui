@@ -8,6 +8,7 @@ import { ReactComponent as SendIcon } from "./Button.svg";
 import { ReactComponent as PaperClip } from "./paperclip.svg";
 import { ReactComponent as GhostAiLogo } from "./shield-share.svg";
 import { ReactComponent as UserLogo } from "./user-search.svg";
+import { ReactComponent as CloseIcon } from "./close.svg";
 
 export {
   SearchIcon,
@@ -20,4 +21,5 @@ export {
   PaperClip,
   GhostAiLogo,
   UserLogo,
+  CloseIcon,
 };

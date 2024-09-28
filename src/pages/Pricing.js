@@ -39,7 +39,7 @@ const PlansAndPricing = () => {
 
           {/* Enterprise Plan */}
           <div className=" p-8 w-1/3">
-            <h3 className="text-4xl font-bold mb-4 text-left">$99<span className="text-base">/month</span></h3>
+            <h3 className="text-4xl font-bold mb-4 text-left">Custom Pricing<span className="text-base"></span></h3>
             <h4 className="text-xl font-semibold mb-4 text-left">Enterprise</h4>
             <h2 className='text-base mb-10 text-left'>For Large Teams & Compliance-Driven Organizations</h2>
             <ul className="text-left space-y-5 py-4">

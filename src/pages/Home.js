@@ -41,26 +41,29 @@ const HomePage = () => {
     <div className="h-screen flex flex-col bg-[#091219] text-white overflow-hidden">
       <header className="p-4 animate-fadeIn">
         <nav className="flex justify-center space-x-12">
-          <a href="#" className="hover:text-gray-300">
+          <a href="#" className="hover:text-gray-300 transition-colors duration-200">
             Home
           </a>
-          <a href="#" className="hover:text-gray-300">
+          <a href="#" className="hover:text-gray-300 transition-colors duration-200">
             Product
           </a>
-          <a href="#" className="hover:text-gray-300">
+          <a href="#" className="hover:text-gray-300 transition-colors duration-200">
             About
           </a>
-          <a href="#" className="hover:text-gray-300">
+          <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+            Pricing
+          </a>
+          <a href="#" className="hover:text-gray-300 transition-colors duration-200">
             Contact
           </a>
         </nav>
       </header>
 
       <main className="flex-grow flex flex-col items-center justify-between px-4 h-full">
-        <h1 className="text-[60px] font-base text-center leading-none mt-[60px] animate-fadeIn">
+        <h1 className="text-[60px] font-bold text-center leading-none mt-[60px] animate-fadeIn">
           <div>Protect Private Data</div> <div>From LLM's</div>
         </h1>
-        <p className="text-lg text-[#F0F7F4] text-center animate-fadeIn">
+        <p className="text-lg text-[#F0F7F4] text-center max-w-2xl animate-fadeIn">
           AI Middleware that Masks Sensitive Data Before LLMs, Ensuring Privacy
           and GDPR Compliance.
         </p>
@@ -83,7 +86,7 @@ const HomePage = () => {
               onClick={handleGetStartedButtonClick}
               disabled={!email}
             >
-              Get Started
+              Get Started for Free
             </button>
           )}
         </div>
